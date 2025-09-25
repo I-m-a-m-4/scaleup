@@ -4,14 +4,14 @@
  * This flow interprets user commands and can interact with Aivo features, like creating tasks.
  *
  * - processWhatsAppMessage - The main function to handle incoming WhatsApp messages.
- * - ProcessWhatsAppMessageInput - The input type for the flow.
- * - ProcessWhatsAppMessageOutput - The return type for the flow.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import {collection, addDoc} from 'firebase/firestore';
 import {db} from '@/lib/firebase';
+import type { ProcessWhatsAppMessageInput, ProcessWhatsAppMessageOutput } from './schemas';
+import { ProcessWhatsAppMessageInputSchema, ProcessWhatsAppMessageOutputSchema } from './schemas';
 
 // Define a tool for creating tasks. The AI will learn to call this function.
 const createTaskTool = ai.defineTool(
@@ -45,19 +45,6 @@ const createTaskTool = ai.defineTool(
     }
   }
 );
-
-// Define the input schema for the main flow
-export const ProcessWhatsAppMessageInputSchema = z.object({
-  message: z.string().describe('The message content from the user on WhatsApp.'),
-  userId: z.string().describe("The Aivo user's unique ID, linked to their WhatsApp number."),
-});
-export type ProcessWhatsAppMessageInput = z.infer<typeof ProcessWhatsAppMessageInputSchema>;
-
-// Define the output schema for the main flow
-export const ProcessWhatsAppMessageOutputSchema = z.object({
-  response: z.string().describe('The conversational response to send back to the user.'),
-});
-export type ProcessWhatsAppMessageOutput = z.infer<typeof ProcessWhatsAppMessageOutputSchema>;
 
 // Define the prompt that uses the tool
 const whatsAppBotPrompt = ai.definePrompt({

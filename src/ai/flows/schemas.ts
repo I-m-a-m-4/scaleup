@@ -20,3 +20,15 @@ export const AnalyzeFocusSessionOutputSchema = z.object({
   feedback: z.string().describe('A short feedback message for the user, e.g., "Looking good!" or "Are you there?".'),
 });
 export type AnalyzeFocusSessionOutput = z.infer<typeof AnalyzeFocusSessionOutputSchema>;
+
+// Schema for process-whatsapp-message.ts
+export const ProcessWhatsAppMessageInputSchema = z.object({
+  message: z.string().describe('The message content from the user on WhatsApp.'),
+  userId: z.string().describe("The Aivo user's unique ID, linked to their WhatsApp number."),
+});
+export type ProcessWhatsAppMessageInput = z.infer<typeof ProcessWhatsAppMessageInputSchema>;
+
+export const ProcessWhatsAppMessageOutputSchema = z.object({
+  response: z.string().describe('The conversational response to send back to the user.'),
+});
+export type ProcessWhatsAppMessageOutput = z.infer<typeof ProcessWhatsAppMessageOutputSchema>;
